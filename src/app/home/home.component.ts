@@ -28,12 +28,23 @@ export class HomeComponent implements OnInit, OnDestroy {
         // tslint:disable-next-line:max-line-length
         // We can call next here to emit a new value and that is important. The observer has a couple of important methods, next is one of them, error is another of them, so that would be the one you use to throw an error and complete is one to let the observer know that you're done.
         observer.next(count);
+        if (count === 2) {
+          observer.complete();
+        }
+        if (count > 3) {
+          observer.error(new Error('count is greater than 3'));
+        }
         count++;
       }, 1000);
     });
 
     this.firstObsSubscription = customIntervalObservable.subscribe(data => {
       console.log(data);
+    }, error => {
+      console.log(error);
+      alert(error.message);
+    }, () => {
+      console.log('completed')
     });
   }
 
